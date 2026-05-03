@@ -650,6 +650,9 @@
       <h2>Formulir Terkirim!</h2>
       <p>Terima kasih telah mengisi formulir pemesanan Nauli Attire.<br>
          Kami akan segera memproses pesanan Anda dan menghubungi melalui WhatsApp.</p>
+      <p style="font-size:0.8rem;background:#fff9e6;border:1px solid #f0e0b0;border-radius:8px;padding:0.75rem;margin-bottom:1rem;color:#7a6555">
+        📎 <strong>Jangan lupa:</strong> kirimkan foto KTP Anda ke WhatsApp kami sebagai jaminan sewa.
+      </p>
       <a class="btn-wa" href="https://wa.me/6287777812020" target="_blank">Chat WhatsApp</a>
     </div>
   </div>
@@ -660,7 +663,7 @@
   // ============================================================
   // KONFIGURASI — ganti URL ini dengan URL Web App Apps Script
   // ============================================================
-  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzuM_Ljjj_aKWZlsmEpPAV-WikwQ4QNwhua3rDYg5FBxf63Asf0fdbdNpPM4mo2dCdY/exec';
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzV_HKEIljaSVs5IKHf2v6tV8qQI4qCd6_cfaiOWNY2_hR8Jmk1qMnuwJPQ-0QobS3R/exec';
 
   let selectedPickup = '';
   let ktpBase64 = '';
@@ -799,46 +802,46 @@
     btnText.style.display = 'none';
     spinner.style.display = 'block';
 
-    const data = {
-      metode: selectedPickup === 'ambil' ? 'Ambil Sendiri' : 'Dikirim',
-      nama: val('f-nama'),
-      wa: val('f-wa'),
-      tanggalAcara: val('f-tgl'),
-      universitas: val('f-univ'),
-      acara: val('f-acara'),
-      series: val('f-series'),
-      tinggiBadan: val('f-tinggi'),
-      beratBadan: val('f-berat'),
-      lingkarDada: val('f-dada'),
-      lingkarPinggang: val('f-pinggang'),
-      lingkarPinggul: val('f-pinggul'),
-      sosmed: val('f-sosmed'),
-      alamat: val('f-alamat'),
-      rekening: val('f-rek'),
-      ktpBase64: ktpBase64,
-      referral: val('f-referral'),
-      timestamp: new Date().toISOString()
-    };
+    // KTP: ambil nama file saja (base64 terlalu besar untuk URL)
+    // Customer diminta kirim foto KTP asli via WhatsApp setelah submit
+    const ktpInput = document.getElementById('f-ktp');
+    const ktpNama = ktpInput.files[0] ? ktpInput.files[0].name : '';
 
-    fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    })
-    .then(() => {
-      document.getElementById('page-form').style.display = 'none';
-      document.getElementById('page-success').style.display = 'block';
-      document.getElementById('step2').classList.remove('active');
-      document.getElementById('step2').classList.add('done');
-      document.getElementById('step3').classList.add('active');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    })
-    .catch(() => {
-      // no-cors selalu masuk .then() bukan .catch(), tapi jaga-jaga
-      document.getElementById('page-form').style.display = 'none';
-      document.getElementById('page-success').style.display = 'block';
+    // Kirim semua data sebagai GET params (bekerja dengan no-cors + doGet Apps Script)
+    const params = new URLSearchParams({
+      metode         : selectedPickup === 'ambil' ? 'Ambil Sendiri' : 'Dikirim',
+      nama           : val('f-nama'),
+      wa             : val('f-wa'),
+      tanggalAcara   : val('f-tgl'),
+      universitas    : val('f-univ'),
+      acara          : val('f-acara'),
+      series         : val('f-series'),
+      tinggiBadan    : val('f-tinggi'),
+      beratBadan     : val('f-berat'),
+      lingkarDada    : val('f-dada'),
+      lingkarPinggang: val('f-pinggang'),
+      lingkarPinggul : val('f-pinggul'),
+      sosmed         : val('f-sosmed'),
+      alamat         : val('f-alamat'),
+      rekening       : val('f-rek'),
+      ktpNama        : ktpNama,
+      referral       : val('f-referral'),
     });
+
+    const url = APPS_SCRIPT_URL + '?' + params.toString();
+
+    fetch(url, { method: 'GET', mode: 'no-cors' })
+      .then(() => showSuccess())
+      .catch(() => showSuccess());
+  }
+
+  function showSuccess() {
+    document.getElementById('page-form').style.display = 'none';
+    document.getElementById('page-success').style.display = 'block';
+    document.getElementById('step2').classList.remove('active');
+    document.getElementById('step2').classList.add('done');
+    document.getElementById('step3').classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 </script>
 </body>
