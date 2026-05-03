@@ -1,540 +1,508 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Form Pemesanan — Nauli Attire</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<style> 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Pemesanan — Nauli Attire</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --cream: #ffffff;
-    --warm: #EDE5D8;
-    --gold: #B8976A;
-    --gold-dark: #8B6F4E;
-    --text: #2C2420;
-    --text-muted: #7A6A5E;
-    --border: #D9CEBF;
-    --white: #FDFAF7;
-    --error: #C0392B;
-  }
+    :root {
+      --cream: #faf8f5;
+      --blush: #e8d5c4;
+      --rose: #c4927a;
+      --dark: #2c2416;
+      --mid: #7a6555;
+      --light: #f0ebe4;
+      --border: #ddd5c8;
+      --error: #c0392b;
+      --success: #27ae60;
+    }
 
-  html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--dark);
+      min-height: 100vh;
+    }
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--cream);
-    color: var(--text);
-    min-height: 100vh;
-  }
+    header {
+      text-align: center;
+      padding: 2.5rem 1rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      background: white;
+    }
 
-  /* ── Header ── */
-  header {
-    background: var(--white);
-    border-bottom: 1px solid var(--border);
-    padding: 1.5rem 2rem;
-    text-align: center;
-    position: sticky; top: 0; z-index: 100;
-  }
-  header .brand {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.6rem;
-    font-weight: 400;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--text);
-  }
-  header .tagline {
-    font-size: 0.72rem;
-    color: var(--text-muted);
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    margin-top: 2px;
-  }
+    header .brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      color: var(--dark);
+    }
 
-  /* ── Progress bar ── */
-  .progress-wrap {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0;
-    padding: 1.5rem 2rem;
-    max-width: 480px;
-    margin: 0 auto;
-  }
-  .step-dot {
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    border: 1.5px solid var(--border);
-    background: var(--white);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.7rem;
-    font-weight: 500;
-    color: var(--text-muted);
-    transition: all 0.3s;
-    flex-shrink: 0;
-  }
-  .step-dot.active { border-color: var(--gold); background: var(--gold); color: #fff; }
-  .step-dot.done { border-color: var(--gold); background: var(--gold); color: #fff; }
-  .step-line {
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-    transition: background 0.3s;
-    max-width: 80px;
-  }
-  .step-line.done { background: var(--gold); }
-  .step-label {
-    font-size: 0.65rem;
-    color: var(--text-muted);
-    text-align: center;
-    letter-spacing: 0.05em;
-    margin-top: 6px;
-  }
-  .steps-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-  }
-  .steps-row { display: flex; align-items: center; gap: 0; }
+    header .subtitle {
+      font-size: 0.8rem;
+      color: var(--mid);
+      letter-spacing: 0.12em;
+      margin-top: 0.25rem;
+      text-transform: uppercase;
+    }
 
-  /* ── Pages ── */
-  .page { display: none; animation: fadeUp 0.4s ease both; }
-  .page.active { display: block; }
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+    /* Progress bar */
+    .progress-bar {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      padding: 1.5rem 1rem;
+      background: white;
+    }
 
-  /* ── Container ── */
-  .container { max-width: 560px; margin: 0 auto; padding: 0 1rem 3rem; }
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      color: var(--mid);
+      letter-spacing: 0.08em;
+    }
 
-  /* ── Page 1: Pickup selection ── */
-  .pickup-hero {
-    text-align: center;
-    padding: 2rem 0 1.5rem;
-  }
-  .pickup-hero h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.8rem;
-    font-weight: 300;
-    font-style: italic;
-    color: var(--text);
-    line-height: 1.3;
-  }
-  .pickup-hero p {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    margin-top: 8px;
-    line-height: 1.6;
-  }
+    .step-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      color: var(--mid);
+      transition: all 0.3s;
+    }
 
-  .pickup-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 1.5rem; }
+    .step.active .step-num {
+      background: var(--rose);
+      border-color: var(--rose);
+      color: white;
+    }
 
-  .pickup-option {
-    background: var(--white);
-    border: 1.5px solid var(--border);
-    border-radius: 12px;
-    padding: 1.75rem 1.25rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .pickup-option::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(184,151,106,0.04), transparent);
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-  .pickup-option:hover { border-color: var(--gold); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(184,151,106,0.12); }
-  .pickup-option:hover::before { opacity: 1; }
-  .pickup-option.selected { border-color: var(--gold); border-width: 2px; box-shadow: 0 6px 24px rgba(184,151,106,0.18); }
-  .pickup-option.selected::before { opacity: 1; }
+    .step.done .step-num {
+      background: var(--dark);
+      border-color: var(--dark);
+      color: white;
+    }
 
-  .pickup-icon {
-    width: 52px; height: 52px;
-    border-radius: 50%;
-    background: var(--warm);
-    display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 14px;
-    font-size: 22px;
-  }
-  .pickup-option h3 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.15rem;
-    font-weight: 500;
-    color: var(--text);
-  }
-  .pickup-option .dur {
-    display: inline-block;
-    margin-top: 8px;
-    font-size: 0.75rem;
-    background: var(--warm);
-    color: var(--gold-dark);
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-  }
-  .pickup-option .desc {
-    font-size: 0.78rem;
-    color: var(--text-muted);
-    margin-top: 8px;
-    line-height: 1.5;
-  }
+    .step-line {
+      width: 40px;
+      height: 1px;
+      background: var(--border);
+      margin: 0 0.25rem;
+    }
 
-  .check-badge {
-    position: absolute;
-    top: 10px; right: 10px;
-    width: 20px; height: 20px;
-    border-radius: 50%;
-    background: var(--gold);
-    display: none;
-    align-items: center;
-    justify-content: center;
-  }
-  .check-badge svg { width: 11px; height: 11px; stroke: #fff; fill: none; stroke-width: 2.5; }
-  .pickup-option.selected .check-badge { display: flex; }
+    /* Main container */
+    .container {
+      max-width: 580px;
+      margin: 0 auto;
+      padding: 2rem 1rem 4rem;
+    }
 
-  .pickup-info {
-    margin-top: 1.25rem;
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 1rem 1.25rem;
-    display: none;
-    font-size: 0.83rem;
-    color: var(--text-muted);
-    line-height: 1.6;
-  }
-  .pickup-info.show { display: block; animation: fadeUp 0.3s ease both; }
-  .pickup-info strong { color: var(--gold-dark); }
+    /* Method selection */
+    #page-method {
+      display: block;
+    }
 
-  .btn-next {
-    display: block;
-    width: 100%;
-    margin-top: 1.5rem;
-    padding: 14px;
-    background: var(--gold);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.1s;
-    display: none;
-  }
-  .btn-next.show { display: block; animation: fadeUp 0.3s ease both; }
-  .btn-next:hover { background: var(--gold-dark); }
-  .btn-next:active { transform: scale(0.98); }
+    #page-form {
+      display: none;
+    }
 
-  /* ── Page 2: Form ── */
-  .form-header {
-    padding: 1.75rem 0 1.25rem;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 1.5rem;
-  }
-  .form-header h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.5rem;
-    font-weight: 400;
-    color: var(--text);
-  }
-  .form-header .method-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 8px;
-    background: var(--warm);
-    color: var(--gold-dark);
-    font-size: 0.78rem;
-    font-weight: 500;
-    padding: 5px 12px;
-    border-radius: 20px;
-  }
+    #page-success {
+      display: none;
+    }
 
-  .section-label {
-    font-size: 0.68rem;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 1rem;
-    margin-top: 1.5rem;
-    padding-bottom: 6px;
-    border-bottom: 1px solid var(--border);
-  }
+    .method-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+      text-align: center;
+      margin-bottom: 1.75rem;
+      color: var(--dark);
+    }
 
-  .field { margin-bottom: 1.1rem; }
-  .field label {
-    display: block;
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    margin-bottom: 6px;
-    font-weight: 400;
-  }
-  .field label .req { color: var(--gold); margin-left: 2px; }
-  .field input, .field select, .field textarea {
-    width: 100%;
-    padding: 11px 14px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    color: var(--text);
-    background: var(--white);
-    transition: border-color 0.2s;
-    -webkit-appearance: none;
-    appearance: none;
-  }
-  .field select {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237A6A5E' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 14px center;
-    padding-right: 36px;
-  }
-  .field input:focus, .field select:focus, .field textarea:focus {
-    outline: none;
-    border-color: var(--gold);
-  }
-  .field textarea { resize: vertical; min-height: 80px; }
-  .field .hint { font-size: 0.73rem; color: var(--text-muted); margin-top: 5px; line-height: 1.4; }
+    .method-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
 
-  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+    .method-card {
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem 1.25rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
 
-  .size-unit {
-    position: relative;
-  }
-  .size-unit input { padding-right: 42px; }
-  .size-unit .unit {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    pointer-events: none;
-  }
+    .method-card:hover {
+      border-color: var(--rose);
+      box-shadow: 0 4px 16px rgba(196,146,122,0.15);
+      transform: translateY(-2px);
+    }
 
-  .sk-box {
-    background: var(--warm);
-    border-radius: 10px;
-    padding: 1rem 1.25rem;
-    margin-top: 1.5rem;
-    font-size: 0.82rem;
-    color: var(--text-muted);
-    line-height: 1.7;
-  }
-  .sk-box strong { color: var(--text); display: block; margin-bottom: 4px; }
+    .method-card.selected {
+      border-color: var(--rose);
+      background: #fdf6f2;
+    }
 
-  .sk-check-wrap { display: flex; align-items: flex-start; gap: 10px; margin-top: 1rem; }
-  .sk-check-wrap input[type=checkbox] {
-    width: 16px; height: 16px; flex-shrink: 0;
-    accent-color: var(--gold);
-    margin-top: 2px;
-    cursor: pointer;
-  }
-  .sk-check-wrap label { font-size: 0.82rem; color: var(--text-muted); cursor: pointer; line-height: 1.5; }
-  .sk-check-wrap label a { color: var(--gold-dark); }
+    .method-card .icon {
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+    }
 
-  .btn-submit {
-    width: 100%;
-    margin-top: 1.5rem;
-    padding: 15px;
-    background: var(--gold);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.92rem;
-    font-weight: 500;
-    letter-spacing: 0.05em;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.1s;
-  }
-  .btn-submit:hover { background: var(--gold-dark); }
-  .btn-submit:active { transform: scale(0.98); }
-  .btn-submit:disabled { background: var(--border); cursor: not-allowed; }
+    .method-card .label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--dark);
+      margin-bottom: 0.4rem;
+    }
 
-  .btn-back {
-    background: none;
-    border: none;
-    color: var(--text-muted);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.82rem;
-    cursor: pointer;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-bottom: 1rem;
-  }
-  .btn-back:hover { color: var(--text); }
+    .method-card .desc {
+      font-size: 0.72rem;
+      color: var(--mid);
+      line-height: 1.5;
+    }
 
-  /* ── Page 3: Sukses ── */
-  .success-wrap {
-    text-align: center;
-    padding: 3rem 1rem;
-  }
-  .success-icon {
-    width: 72px; height: 72px;
-    border-radius: 50%;
-    background: var(--warm);
-    display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 1.5rem;
-    font-size: 30px;
-  }
-  .success-wrap h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.8rem;
-    font-weight: 300;
-    font-style: italic;
-  }
-  .success-wrap p {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    margin-top: 10px;
-    line-height: 1.7;
-    max-width: 360px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .success-details {
-    margin: 1.5rem auto;
-    max-width: 360px;
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-    text-align: left;
-  }
-  .detail-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 16px;
-    font-size: 0.82rem;
-    border-bottom: 1px solid var(--border);
-  }
-  .detail-row:last-child { border-bottom: none; }
-  .detail-row .dk { color: var(--text-muted); }
-  .detail-row .dv { color: var(--text); font-weight: 500; text-align: right; max-width: 60%; }
+    .btn-next {
+      display: block;
+      width: 100%;
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: var(--dark);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
 
-  /* ── Error ── */
-  .field-error { font-size: 0.75rem; color: var(--error); margin-top: 4px; }
-  .field input.err, .field select.err, .field textarea.err { border-color: var(--error); }
+    .btn-next:hover {
+      background: var(--rose);
+    }
 
-  @media (max-width: 480px) {
-    .pickup-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-    .row3 { grid-template-columns: 1fr 1fr; }
-    .row2 { grid-template-columns: 1fr; }
-  }
-  @media (max-width: 360px) {
-    .pickup-grid { grid-template-columns: 1fr; }
-  }
-</style>
+    /* Form */
+    .form-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .btn-back {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.4rem 0.75rem;
+      font-size: 0.75rem;
+      color: var(--mid);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-back:hover {
+      border-color: var(--rose);
+      color: var(--rose);
+    }
+
+    .method-badge {
+      font-size: 0.75rem;
+      background: var(--light);
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.75rem;
+      border-radius: 20px;
+      color: var(--mid);
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--dark);
+      margin: 1.5rem 0 0.75rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--border);
+      letter-spacing: 0.05em;
+    }
+
+    .field {
+      margin-bottom: 1rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--mid);
+      margin-bottom: 0.35rem;
+      letter-spacing: 0.04em;
+    }
+
+    .req { color: var(--rose); margin-left: 2px; }
+
+    input[type="text"],
+    input[type="tel"],
+    input[type="date"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 0.7rem 0.9rem;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      color: var(--dark);
+      background: white;
+      transition: border-color 0.2s;
+      outline: none;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--rose);
+    }
+
+    input.error, select.error, textarea.error {
+      border-color: var(--error);
+    }
+
+    .error-msg {
+      font-size: 0.7rem;
+      color: var(--error);
+      margin-top: 0.25rem;
+      display: none;
+    }
+
+    .error-msg.show { display: block; }
+
+    .row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .sk-box {
+      background: var(--light);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      font-size: 0.75rem;
+      color: var(--mid);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .checkbox-row input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      margin-top: 2px;
+      flex-shrink: 0;
+      accent-color: var(--rose);
+    }
+
+    .checkbox-row label {
+      margin: 0;
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+
+    .btn-submit {
+      display: block;
+      width: 100%;
+      padding: 1rem;
+      background: var(--rose);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-submit:hover { background: #b07d66; }
+    .btn-submit:disabled { background: var(--border); cursor: not-allowed; }
+
+    .note {
+      text-align: center;
+      font-size: 0.7rem;
+      color: var(--mid);
+      margin-top: 0.75rem;
+    }
+
+    /* Success */
+    .success-wrap {
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+
+    .success-icon { font-size: 3rem; margin-bottom: 1rem; }
+
+    .success-wrap h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 400;
+      margin-bottom: 0.75rem;
+    }
+
+    .success-wrap p {
+      font-size: 0.85rem;
+      color: var(--mid);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-wa {
+      display: inline-block;
+      padding: 0.85rem 2rem;
+      background: #25D366;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* File upload */
+    .file-label {
+      display: block;
+      padding: 0.7rem 0.9rem;
+      border: 1.5px dashed var(--border);
+      border-radius: 8px;
+      font-size: 0.82rem;
+      color: var(--mid);
+      cursor: pointer;
+      transition: border-color 0.2s;
+      text-align: center;
+    }
+
+    .file-label:hover { border-color: var(--rose); }
+    #ktp-preview { display: none; font-size: 0.75rem; color: var(--success); margin-top: 0.25rem; }
+
+    /* Loading spinner */
+    .spinner {
+      display: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 480px) {
+      .method-cards { grid-template-columns: 1fr 1fr; }
+      .row-2 { grid-template-columns: 1fr 1fr; }
+      .step-line { width: 24px; }
+    }
+  </style>
 </head>
 <body>
 
 <header>
   <div class="brand">Nauli Attire</div>
-  <div class="tagline">Form Pemesanan Sewa Kebaya</div>
+  <div class="subtitle">Form Pemesanan Sewa Kebaya</div>
 </header>
 
-<!-- Progress -->
+<div class="progress-bar">
+  <div class="step active" id="step1">
+    <div class="step-num">1</div>
+    <span>Pengambilan</span>
+  </div>
+  <div class="step-line"></div>
+  <div class="step" id="step2">
+    <div class="step-num">2</div>
+    <span>Data diri</span>
+  </div>
+  <div class="step-line"></div>
+  <div class="step" id="step3">
+    <div class="step-num">3</div>
+    <span>Selesai</span>
+  </div>
+</div>
+
 <div class="container">
-  <div class="progress-wrap" style="flex-direction:column;gap:0;padding:1.25rem 0 0.5rem">
-    <div class="steps-row" id="steps-row">
-      <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
-        <div class="step-dot active" id="dot1">1</div>
-        <span class="step-label">Pengambilan</span>
+
+  <!-- Page 1: Pilih Metode -->
+  <div id="page-method">
+    <div class="method-title">Bagaimana kebaya akan sampai ke tangan Anda?</div>
+    <div class="method-cards">
+      <div class="method-card" id="card-ambil" onclick="selectMethod('ambil')">
+        <div class="icon">🏪</div>
+        <div class="label">Ambil Sendiri</div>
+        <div class="desc">Ambil & kembalikan langsung ke toko kami</div>
       </div>
-      <div class="step-line" id="line1" style="margin-bottom:16px"></div>
-      <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
-        <div class="step-dot" id="dot2">2</div>
-        <span class="step-label">Data diri</span>
-      </div>
-      <div class="step-line" id="line2" style="margin-bottom:16px"></div>
-      <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
-        <div class="step-dot" id="dot3">3</div>
-        <span class="step-label">Selesai</span>
+      <div class="method-card" id="card-kirim" onclick="selectMethod('kirim')">
+        <div class="icon">📦</div>
+        <div class="label">Dikirim</div>
+        <div class="desc">Diantar ke alamat Anda, termasuk waktu kirim balik</div>
       </div>
     </div>
+    <button class="btn-next" onclick="goToForm()">Lanjut Isi Data →</button>
   </div>
-</div>
 
-<!-- ══ PAGE 1: Pilih metode ══ -->
-<div class="page active" id="page1">
-  <div class="container">
-    <div class="pickup-hero">
-      <h2>Bagaimana kebaya akan<br>sampai ke tangan Anda?</h2>
-    </div>
-
-    <div class="pickup-grid">
-      <div class="pickup-option" id="opt-ambil" onclick="selectPickup('ambil')">
-        <div class="check-badge">
-          <svg viewBox="0 0 12 10"><polyline points="1,5 4,8 11,1"/></svg>
-        </div>
-        <div class="pickup-icon">🏪</div>
-        <h3>Ambil Sendiri</h3>
-        <p class="desc">Ambil & kembalikan<br>langsung ke toko kami</p>
-      </div>
-      <div class="pickup-option" id="opt-kirim" onclick="selectPickup('kirim')">
-        <div class="check-badge">
-          <svg viewBox="0 0 12 10"><polyline points="1,5 4,8 11,1"/></svg>
-        </div>
-        <div class="pickup-icon">📦</div>
-        <h3>Dikirim</h3>
-        <p class="desc">Diantar ke alamat Anda,<br>termasuk waktu kirim balik</p>
-      </div>
-    </div>
-
-    <div class="pickup-info" id="pickup-info"></div>
-    <button class="btn-next" id="btn-next" onclick="goToForm()">Lanjut Isi Data →</button>
-  </div>
-</div>
-
-<!-- ══ PAGE 2: Form ══ -->
-<div class="page" id="page2">
-  <div class="container">
-    <button class="btn-back" onclick="goBack()">← Ubah metode pengambilan</button>
-
+  <!-- Page 2: Form -->
+  <div id="page-form">
     <div class="form-header">
-      <h2>Lengkapi Data Pemesanan</h2>
-      <div class="method-badge" id="method-badge">📦 Metode: —</div>
+      <button class="btn-back" onclick="goBack()">← Ubah</button>
+      <span class="method-badge" id="method-badge">📦 Metode: —</span>
     </div>
 
-    <!-- Data Pribadi -->
-    <div class="section-label">Data Pribadi</div>
+    <div class="section-title">Data Pribadi</div>
 
     <div class="field">
       <label>Nama Lengkap <span class="req">*</span></label>
       <input type="text" id="f-nama" placeholder="Sesuai KTP">
+      <div class="error-msg" id="err-nama">Nama wajib diisi</div>
     </div>
-    <div class="row2">
-      <div class="field">
-        <label>No. WhatsApp <span class="req">*</span></label>
-        <input type="tel" id="f-wa" placeholder="08xxxxxxxxxx">
-      </div>
+
+    <div class="field">
+      <label>No. WhatsApp <span class="req">*</span></label>
+      <input type="tel" id="f-wa" placeholder="08xxxxxxxxxx">
+      <div class="error-msg" id="err-wa">Nomor WhatsApp wajib diisi</div>
+    </div>
+
+    <div class="row-2">
       <div class="field">
         <label>Tanggal Acara <span class="req">*</span></label>
         <input type="date" id="f-tgl">
+        <div class="error-msg" id="err-tgl">Tanggal wajib diisi</div>
       </div>
-    </div>
-    <div class="row2">
       <div class="field">
         <label>Universitas / Tempat <span class="req">*</span></label>
-        <input type="text" id="f-univ" placeholder="Nama universitas atau tempat acara">
+        <input type="text" id="f-univ" placeholder="Nama kampus / gedung">
+        <div class="error-msg" id="err-univ">Tempat wajib diisi</div>
       </div>
+    </div>
+
+    <div class="row-2">
       <div class="field">
         <label>Acara <span class="req">*</span></label>
         <select id="f-acara">
@@ -548,439 +516,330 @@
           <option>Pesta / Gala Dinner</option>
           <option>Lainnya</option>
         </select>
+        <div class="error-msg" id="err-acara">Acara wajib dipilih</div>
+      </div>
+      <div class="field">
+        <label>Series Kebaya <span class="req">*</span></label>
+        <select id="f-series">
+          <option value="">— Pilih series —</option>
+          <optgroup label="Alanya">
+            <option>Alanya Blush Pink</option>
+            <option>Alanya Butter Yellow</option>
+            <option>Alanya Creamy Nude</option>
+            <option>Alanya Emerald</option>
+            <option>Alanya Rose Gold</option>
+          </optgroup>
+          <optgroup label="Aurora">
+            <option>Aurora Mahogany</option>
+          </optgroup>
+          <optgroup label="Calla">
+            <option>Calla Caramel</option>
+            <option>Calla Grey</option>
+            <option>Calla Ice Blue</option>
+            <option>Calla Maroon</option>
+          </optgroup>
+          <optgroup label="Edita">
+            <option>Edita Blush Pink</option>
+            <option>Edita Creamy Nude</option>
+            <option>Edita Navy</option>
+            <option>Edita Nude Pink</option>
+            <option>Edita Emerald Blue</option>
+          </optgroup>
+          <optgroup label="Elysian">
+            <option>Elysian Baby Pink</option>
+            <option>Elysian Blue Denim</option>
+            <option>Elysian Mauve</option>
+          </optgroup>
+          <optgroup label="Shreya">
+            <option>Shreya Burgundy</option>
+            <option>Shreya Ice Blue</option>
+          </optgroup>
+        </select>
+        <div class="error-msg" id="err-series">Series kebaya wajib dipilih</div>
       </div>
     </div>
-    <div class="field">
-      <label>Series Kebaya <span class="req">*</span></label>
-      <select id="f-series">
-        <option value="">— Pilih series —</option>
-        <optgroup label="Alanya">
-          <option value="Alanya Blush Pink">Alanya Blush Pink</option>
-          <option value="Alanya Butter Yellow">Alanya Butter Yellow</option>
-          <option value="Alanya Creamy Nude">Alanya Creamy Nude</option>
-          <option value="Alanya Emerald">Alanya Emerald</option>
-          <option value="Alanya Rose Gold">Alanya Rose Gold</option>
-        </optgroup>
-        <optgroup label="Aurora">
-          <option value="Aurora Mahogany">Aurora Mahogany</option>
-        </optgroup>
-        <optgroup label="Calla">
-          <option value="Calla Caramel">Calla Caramel</option>
-          <option value="Calla Grey">Calla Grey</option>
-          <option value="Calla Ice Blue">Calla Ice Blue</option>
-          <option value="Calla Maroon">Calla Maroon</option>
-        </optgroup>
-        <optgroup label="Edita">
-          <option value="Edita Blush Pink">Edita Blush Pink</option>
-          <option value="Edita Creamy Nude">Edita Creamy Nude</option>
-          <option value="Edita Navy">Edita Navy</option>
-          <option value="Edita Nude Pink">Edita Nude Pink</option>
-          <option value="Edita Emerald Blue">Edita Emerald Blue</option>
-        </optgroup>
-        <optgroup label="Elysian">
-          <option value="Elysian Baby Pink">Elysian Baby Pink</option>
-          <option value="Elysian Blue Denim">Elysian Blue Denim</option>
-          <option value="Elysian Mauve">Elysian Mauve</option>
-        </optgroup>
-        <optgroup label="Shreya">
-          <option value="Shreya Burgundy">Shreya Burgundy</option>
-          <option value="Shreya Ice Blue">Shreya Ice Blue</option>
-        </optgroup>
-      </select>
-    </div>
 
-    <!-- Ukuran Tubuh -->
-    <div class="section-label">Ukuran Tubuh</div>
-    <div class="row2">
+    <div class="section-title">Ukuran Tubuh</div>
+    <div class="row-2">
       <div class="field">
         <label>Tinggi Badan <span class="req">*</span></label>
-        <div class="size-unit">
-          <input type="number" id="f-tinggi" placeholder="160" min="140" max="200">
-          <span class="unit">cm</span>
-        </div>
+        <input type="number" id="f-tinggi" placeholder="cm" min="140" max="200">
+        <div class="error-msg" id="err-tinggi">Tinggi badan wajib diisi</div>
       </div>
       <div class="field">
         <label>Berat Badan <span class="req">*</span></label>
-        <div class="size-unit">
-          <input type="number" id="f-berat" placeholder="55" min="30" max="150">
-          <span class="unit">kg</span>
-        </div>
+        <input type="number" id="f-berat" placeholder="kg" min="30" max="150">
+        <div class="error-msg" id="err-berat">Berat badan wajib diisi</div>
       </div>
     </div>
-    <div class="row3">
+    <div class="row-2">
       <div class="field">
         <label>Lingkar Dada <span class="req">*</span></label>
-        <div class="size-unit">
-          <input type="number" id="f-dada" placeholder="85">
-          <span class="unit">cm</span>
-        </div>
+        <input type="number" id="f-dada" placeholder="cm">
+        <div class="error-msg" id="err-dada">Lingkar dada wajib diisi</div>
       </div>
       <div class="field">
         <label>Lingkar Pinggang <span class="req">*</span></label>
-        <div class="size-unit">
-          <input type="number" id="f-pinggang" placeholder="70">
-          <span class="unit">cm</span>
-        </div>
-      </div>
-      <div class="field">
-        <label>Lingkar Pinggul <span class="req">*</span></label>
-        <div class="size-unit">
-          <input type="number" id="f-pinggul" placeholder="92">
-          <span class="unit">cm</span>
-        </div>
+        <input type="number" id="f-pinggang" placeholder="cm">
+        <div class="error-msg" id="err-pinggang">Lingkar pinggang wajib diisi</div>
       </div>
     </div>
+    <div class="field" style="max-width:50%">
+      <label>Lingkar Pinggul <span class="req">*</span></label>
+      <input type="number" id="f-pinggul" placeholder="cm">
+      <div class="error-msg" id="err-pinggul">Lingkar pinggul wajib diisi</div>
+    </div>
 
-    <!-- Kontak & Sosial -->
-    <div class="section-label">Kontak & Sosial Media</div>
+    <div class="section-title">Kontak & Sosial Media</div>
     <div class="field">
       <label>Username Instagram & TikTok <span class="req">*</span></label>
-      <input type="text" id="f-sosmed" placeholder="@namainstagram / @namatiktok">
+      <input type="text" id="f-sosmed" placeholder="@username">
+      <div class="error-msg" id="err-sosmed">Username wajib diisi</div>
     </div>
+
     <div class="field">
       <label>Alamat Lengkap <span class="req">*</span></label>
-      <textarea id="f-alamat" placeholder="Jl. ..., RT/RW ..., Kelurahan ..., Kecamatan ..., Kota/Kabupaten ..., Kode Pos ..."></textarea>
-      <div class="hint">Sertakan RT, RW, Kelurahan, Kecamatan, Kota, dan Kode Pos</div>
+      <textarea id="f-alamat" placeholder="Sertakan RT, RW, Kelurahan, Kecamatan, Kota, dan Kode Pos"></textarea>
+      <div class="error-msg" id="err-alamat">Alamat lengkap wajib diisi</div>
     </div>
 
-    <!-- Pembayaran & Deposit -->
-    <div class="section-label">Rekening & Deposit</div>
+    <div class="section-title">Rekening & Deposit</div>
     <div class="field">
       <label>No. Rekening, Nama Bank & Atas Nama <span class="req">*</span></label>
-      <input type="text" id="f-rek" placeholder="1234567890 — BCA — a/n Nama Lengkap">
-      <div class="hint">Digunakan untuk pengembalian deposit setelah kebaya dikembalikan</div>
+      <input type="text" id="f-rek" placeholder="Contoh: 1234567890 — BCA — Nauli">
+      <div class="error-msg" id="err-rek">Rekening wajib diisi untuk pengembalian deposit</div>
     </div>
 
-    <!-- KTP -->
-    <div class="section-label">Verifikasi Identitas</div>
+    <div class="section-title">Verifikasi Identitas</div>
     <div class="field">
       <label>Foto KTP <span class="req">*</span></label>
-      <input type="file" id="f-ktp" accept="image/*" style="padding:8px 14px;font-size:0.82rem">
-      <div class="hint">KTP digunakan hanya sebagai jaminan sewa dan dijaga kerahasiaannya. Format: JPG/PNG, maks. 5MB</div>
+      <label class="file-label" for="f-ktp">📎 Klik untuk upload foto KTP (JPG/PNG, maks. 5MB)</label>
+      <input type="file" id="f-ktp" accept="image/*" style="display:none" onchange="previewKtp(this)">
+      <div id="ktp-preview"></div>
+      <div class="error-msg" id="err-ktp">Foto KTP wajib diupload</div>
     </div>
 
-    <!-- Referral -->
-    <div class="section-label">Lainnya</div>
+    <div class="section-title">Lainnya</div>
     <div class="field">
-      <label>Kode Referral <span style="font-size:0.72rem;color:var(--text-muted)">(opsional)</span></label>
-      <input type="text" id="f-referral" placeholder="Kode referral jika ada">
+      <label>Kode Referral (opsional)</label>
+      <input type="text" id="f-referral" placeholder="Kosongkan jika tidak ada">
     </div>
 
-    <!-- S&K -->
     <div class="sk-box">
-      <strong>Syarat & Ketentuan Sewa</strong>
+      <strong>Syarat & Ketentuan Sewa</strong><br>
       Dengan mengisi form ini, Anda menyetujui seluruh syarat dan ketentuan yang berlaku di Nauli Attire, termasuk ketentuan deposit, durasi sewa, dan tata cara pengembalian.
     </div>
-    <div class="sk-check-wrap">
-      <input type="checkbox" id="f-sk">
-      <label for="f-sk">Saya telah membaca dan menyetujui <a href="" onclick="return false">syarat & ketentuan</a> yang berlaku</label>
+
+    <div class="checkbox-row">
+      <input type="checkbox" id="f-setuju">
+      <label for="f-setuju">Saya telah membaca dan menyetujui syarat &amp; ketentuan yang berlaku</label>
     </div>
+    <div class="error-msg" id="err-setuju" style="margin-bottom:0.75rem">Anda harus menyetujui syarat & ketentuan</div>
 
-    <button class="btn-submit" id="btn-submit" onclick="submitForm()">Kirim Formulir Pemesanan</button>
-    <p style="font-size:0.75rem;color:var(--text-muted);text-align:center;margin-top:10px">Data Anda aman dan hanya digunakan untuk keperluan pemesanan</p>
+    <button class="btn-submit" id="btn-submit" onclick="submitForm()">
+      <span id="btn-text">Kirim Formulir Pemesanan</span>
+      <div class="spinner" id="spinner"></div>
+    </button>
+    <p class="note">🔒 Data Anda aman dan hanya digunakan untuk keperluan pemesanan</p>
   </div>
-</div>
 
-<!-- ══ PAGE 3: Sukses ══ -->
-<div class="page" id="page3">
-  <div class="container">
+  <!-- Page 3: Success -->
+  <div id="page-success">
     <div class="success-wrap">
       <div class="success-icon">✨</div>
       <h2>Formulir Terkirim!</h2>
-      <p>Terima kasih telah mengisi formulir pemesanan Nauli Attire. Kami akan segera memproses pesanan Anda dan menghubungi melalui WhatsApp.</p>
-
-      <div class="success-details" id="success-details"></div>
-
-      <p style="margin-top:1.5rem;font-size:0.8rem">Ada pertanyaan? Hubungi kami di WhatsApp</p>
-      <a href="https://wa.me/6287777812020" target="_blank" style="display:inline-block;margin-top:8px;padding:10px 24px;background:var(--gold);color:#fff;border-radius:8px;text-decoration:none;font-size:0.85rem;font-weight:500">
-        Chat WhatsApp
-      </a>
+      <p>Terima kasih telah mengisi formulir pemesanan Nauli Attire.<br>
+         Kami akan segera memproses pesanan Anda dan menghubungi melalui WhatsApp.</p>
+      <a class="btn-wa" href="https://wa.me/6287777812020" target="_blank">Chat WhatsApp</a>
     </div>
   </div>
+
 </div>
 
 <script>
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzuM_Ljjj_aKWZlsmEpPAV-WikwQ4QNwhua3rDYg5FBxf63Asf0fdbdNpPM4mo2dCdY/exec';
+  // ============================================================
+  // KONFIGURASI — ganti URL ini dengan URL Web App Apps Script
+  // ============================================================
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzuM_Ljjj_aKWZlsmEpPAV-WikwQ4QNwhua3rDYg5FBxf63Asf0fdbdNpPM4mo2dCdY/exec';
 
-let selectedPickup = '';
+  let selectedPickup = '';
+  let ktpBase64 = '';
 
-// ── Field error helpers ──
-function showError(id, msg) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.classList.add('err');
-  let errEl = el.parentElement.querySelector('.field-error');
-  if (!errEl) {
-    errEl = document.createElement('div');
-    errEl.className = 'field-error';
-    el.parentElement.appendChild(errEl);
+  function selectMethod(method) {
+    selectedPickup = method;
+    document.getElementById('card-ambil').classList.toggle('selected', method === 'ambil');
+    document.getElementById('card-kirim').classList.toggle('selected', method === 'kirim');
   }
-  errEl.textContent = msg;
-}
 
-function clearError(id) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.classList.remove('err');
-  const errEl = el.parentElement.querySelector('.field-error');
-  if (errEl) errEl.textContent = '';
-}
+  function goToForm() {
+    if (!selectedPickup) {
+      alert('Silakan pilih metode pengambilan terlebih dahulu.');
+      return;
+    }
+    document.getElementById('page-method').style.display = 'none';
+    document.getElementById('page-form').style.display = 'block';
+    document.getElementById('method-badge').textContent =
+      selectedPickup === 'ambil' ? '🏪 Metode: Ambil Sendiri' : '📦 Metode: Dikirim';
 
-function clearAllErrors() {
-  document.querySelectorAll('.err').forEach(e => e.classList.remove('err'));
-  document.querySelectorAll('.field-error').forEach(e => e.textContent = '');
-}
+    document.getElementById('step1').classList.remove('active');
+    document.getElementById('step1').classList.add('done');
+    document.getElementById('step2').classList.add('active');
+  }
 
-function val(id) { return (document.getElementById(id)?.value || '').trim(); }
+  function goBack() {
+    document.getElementById('page-form').style.display = 'none';
+    document.getElementById('page-method').style.display = 'block';
+    document.getElementById('step2').classList.remove('active');
+    document.getElementById('step1').classList.remove('done');
+    document.getElementById('step1').classList.add('active');
+  }
 
-// ── Live validation: hapus error saat user mulai isi ──
-document.addEventListener('DOMContentLoaded', () => {
-  const ids = ['f-nama','f-wa','f-tgl','f-univ','f-acara','f-series',
-               'f-tinggi','f-berat','f-dada','f-pinggang','f-pinggul',
-               'f-sosmed','f-alamat','f-rek','f-ktp'];
-  ids.forEach(id => {
+  function val(id) {
     const el = document.getElementById(id);
-    if (el) el.addEventListener('input', () => clearError(id));
-    if (el) el.addEventListener('change', () => clearError(id));
-  });
-});
+    if (!el) return '';
+    return el.value ? el.value.trim() : '';
+  }
 
-// ── Step 1: Pilih metode ──
-function selectPickup(mode) {
-  selectedPickup = mode;
-  document.getElementById('opt-ambil').classList.toggle('selected', mode === 'ambil');
-  document.getElementById('opt-kirim').classList.toggle('selected', mode === 'kirim');
-
-  const info = document.getElementById('pickup-info');
-  info.innerHTML = mode === 'ambil'
-    ? '<strong>Ambil Sendiri — </strong>Anda datang langsung ke toko untuk mengambil dan mengembalikan kebaya.'
-    : '<strong>Kebaya Dikirim —</strong> ke alamat Anda. Pastikan alamat diisi lengkap.';
-  info.classList.add('show');
-
-  const btnNext = document.getElementById('btn-next');
-  btnNext.classList.add('show');
-  // Hapus pesan error pilihan jika ada
-  const pickupErr = document.getElementById('pickup-err');
-  if (pickupErr) pickupErr.style.display = 'none';
-}
-
-function goToForm() {
-  // Validasi: wajib pilih metode
-  if (!selectedPickup) {
-    let pickupErr = document.getElementById('pickup-err');
-    if (!pickupErr) {
-      pickupErr = document.createElement('div');
-      pickupErr.id = 'pickup-err';
-      pickupErr.style.cssText = 'color:#C0392B;font-size:0.8rem;text-align:center;margin-top:10px;font-weight:500';
-      document.getElementById('btn-next').insertAdjacentElement('afterend', pickupErr);
+  function showError(errId, hide) {
+    const el = document.getElementById(errId);
+    if (!el) return;
+    if (hide) {
+      el.classList.remove('show');
+    } else {
+      el.classList.add('show');
     }
-    pickupErr.textContent = 'Pilih salah satu metode pengambilan terlebih dahulu.';
-    pickupErr.style.display = 'block';
-    return;
   }
 
-  const label = selectedPickup === 'ambil' ? '🏪 Ambil Sendiri' : '📦 Dikirim';
-  document.getElementById('method-badge').textContent = label;
-
-  // Tampilkan/sembunyikan field alamat sesuai metode
-  const fieldAlamat = document.getElementById('field-alamat');
-  const reqAlamat = document.querySelector('#field-alamat label .req');
-  if (selectedPickup === 'kirim') {
-    fieldAlamat.style.display = 'block';
-    if (reqAlamat) reqAlamat.style.display = 'inline';
-  } else {
-    fieldAlamat.style.display = 'none';
-    if (reqAlamat) reqAlamat.style.display = 'none';
-    clearError('f-alamat');
+  function clearAllErrors() {
+    document.querySelectorAll('.error-msg').forEach(e => e.classList.remove('show'));
+    document.querySelectorAll('input, select, textarea').forEach(e => e.classList.remove('error'));
   }
 
-  clearAllErrors();
-  setPage('page2');
-  setStep(2);
-}
-
-function goBack() {
-  clearAllErrors();
-  setPage('page1');
-  setStep(1);
-}
-
-function setPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function setStep(n) {
-  [1,2,3].forEach(i => {
-    const dot = document.getElementById('dot' + i);
-    dot.classList.remove('active','done');
-    if (i < n) dot.classList.add('done');
-    else if (i === n) dot.classList.add('active');
-  });
-  [1,2].forEach(i => {
-    const line = document.getElementById('line' + i);
-    line.classList.toggle('done', i < n);
-  });
-}
-
-// ── Step 2: Validasi form lengkap ──
-function validateForm() {
-  let valid = true;
-  clearAllErrors();
-
-  // Nama
-  if (!val('f-nama')) { showError('f-nama', 'Nama lengkap wajib diisi'); valid = false; }
-
-  // WhatsApp
-  const wa = val('f-wa');
-  if (!wa) { showError('f-wa', 'No. WhatsApp wajib diisi'); valid = false; }
-  else if (!/^08[0-9]{8,12}$/.test(wa.replace(/[-\s]/g,''))) {
-    showError('f-wa', 'Format tidak valid, contoh: 081234567890'); valid = false;
-  }
-
-  // Tanggal acara
-  if (!val('f-tgl')) { showError('f-tgl', 'Tanggal acara wajib diisi'); valid = false; }
-  else {
-    const tgl = new Date(val('f-tgl'));
-    const today = new Date(); today.setHours(0,0,0,0);
-    if (tgl < today) { showError('f-tgl', 'Tanggal acara tidak boleh di masa lalu'); valid = false; }
-  }
-
-  // Universitas / tempat
-  if (!val('f-univ')) { showError('f-univ', 'Universitas / tempat wajib diisi'); valid = false; }
-
-  // Acara
-  if (!val('f-acara')) { showError('f-acara', 'Jenis acara wajib dipilih'); valid = false; }
-
-  // Series kebaya
-  if (!val('f-series')) { showError('f-series', 'Series kebaya wajib dipilih'); valid = false; }
-
-  // Ukuran tubuh
-  const sizes = [
-    { id: 'f-tinggi', label: 'Tinggi badan', min: 140, max: 200 },
-    { id: 'f-berat',  label: 'Berat badan',  min: 30,  max: 150 },
-    { id: 'f-dada',   label: 'Lingkar dada',  min: 60,  max: 150 },
-    { id: 'f-pinggang',label: 'Lingkar pinggang', min: 50, max: 140 },
-    { id: 'f-pinggul', label: 'Lingkar pinggul',  min: 60, max: 160 },
-  ];
-  sizes.forEach(s => {
-    const v = val(s.id);
-    if (!v) { showError(s.id, s.label + ' wajib diisi'); valid = false; }
-    else if (parseInt(v) < s.min || parseInt(v) > s.max) {
-      showError(s.id, 'Masukkan nilai ' + s.min + '–' + s.max); valid = false;
+  function markError(fieldId, errId, message) {
+    const field = document.getElementById(fieldId);
+    const err = document.getElementById(errId);
+    if (field) field.classList.add('error');
+    if (err) {
+      if (message) err.textContent = message;
+      err.classList.add('show');
     }
-  });
-
-  // Sosmed
-  if (!val('f-sosmed')) { showError('f-sosmed', 'Username sosial media wajib diisi'); valid = false; }
-
-  // Alamat (hanya jika dikirim)
-  if (selectedPickup === 'kirim' && !val('f-alamat')) {
-    showError('f-alamat', 'Alamat lengkap wajib diisi untuk pengiriman'); valid = false;
   }
 
-  // Rekening
-  if (!val('f-rek')) { showError('f-rek', 'No. rekening wajib diisi'); valid = false; }
-
-  // KTP
-  const ktpInput = document.getElementById('f-ktp');
-  if (!ktpInput.files || ktpInput.files.length === 0) {
-    showError('f-ktp', 'Foto KTP wajib diunggah'); valid = false;
-  } else {
-    const file = ktpInput.files[0];
+  function previewKtp(input) {
+    const file = input.files[0];
+    if (!file) return;
     if (file.size > 5 * 1024 * 1024) {
-      showError('f-ktp', 'Ukuran file maksimal 5MB'); valid = false;
+      alert('Ukuran file maksimal 5MB');
+      input.value = '';
+      return;
     }
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      ktpBase64 = e.target.result;
+      document.getElementById('ktp-preview').textContent = '✅ ' + file.name;
+      document.getElementById('ktp-preview').style.display = 'block';
+      document.getElementById('err-ktp').classList.remove('show');
+    };
+    reader.readAsDataURL(file);
   }
 
-  // S&K
-  if (!document.getElementById('f-sk').checked) {
-    // Scroll ke checkbox dan highlight
-    document.getElementById('f-sk').scrollIntoView({ behavior: 'smooth', block: 'center' });
-    const skWrap = document.querySelector('.sk-check-wrap');
-    skWrap.style.outline = '2px solid #C0392B';
-    skWrap.style.borderRadius = '6px';
-    skWrap.style.padding = '6px';
-    setTimeout(() => {
-      skWrap.style.outline = '';
-      skWrap.style.padding = '';
-    }, 3000);
-    valid = false;
+  function validateForm() {
+    clearAllErrors();
+    let valid = true;
+
+    const fields = [
+      ['f-nama', 'err-nama'],
+      ['f-wa', 'err-wa'],
+      ['f-tgl', 'err-tgl'],
+      ['f-univ', 'err-univ'],
+      ['f-acara', 'err-acara'],
+      ['f-series', 'err-series'],
+      ['f-tinggi', 'err-tinggi'],
+      ['f-berat', 'err-berat'],
+      ['f-dada', 'err-dada'],
+      ['f-pinggang', 'err-pinggang'],
+      ['f-pinggul', 'err-pinggul'],
+      ['f-sosmed', 'err-sosmed'],
+      ['f-alamat', 'err-alamat'],
+      ['f-rek', 'err-rek'],
+    ];
+
+    fields.forEach(([fId, eId]) => {
+      if (!val(fId)) {
+        markError(fId, eId);
+        valid = false;
+      }
+    });
+
+    if (!ktpBase64) {
+      markError('f-ktp', 'err-ktp');
+      valid = false;
+    }
+
+    if (!document.getElementById('f-setuju').checked) {
+      document.getElementById('err-setuju').classList.add('show');
+      valid = false;
+    }
+
+    return valid;
   }
 
-  // Scroll ke error pertama
-  if (!valid) {
-    const firstErr = document.querySelector('.err');
-    if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  function submitForm() {
+    if (!validateForm()) {
+      const firstError = document.querySelector('.error-msg.show');
+      if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    const btn = document.getElementById('btn-submit');
+    const btnText = document.getElementById('btn-text');
+    const spinner = document.getElementById('spinner');
+
+    btn.disabled = true;
+    btnText.style.display = 'none';
+    spinner.style.display = 'block';
+
+    const data = {
+      metode: selectedPickup === 'ambil' ? 'Ambil Sendiri' : 'Dikirim',
+      nama: val('f-nama'),
+      wa: val('f-wa'),
+      tanggalAcara: val('f-tgl'),
+      universitas: val('f-univ'),
+      acara: val('f-acara'),
+      series: val('f-series'),
+      tinggiBadan: val('f-tinggi'),
+      beratBadan: val('f-berat'),
+      lingkarDada: val('f-dada'),
+      lingkarPinggang: val('f-pinggang'),
+      lingkarPinggul: val('f-pinggul'),
+      sosmed: val('f-sosmed'),
+      alamat: val('f-alamat'),
+      rekening: val('f-rek'),
+      ktpBase64: ktpBase64,
+      referral: val('f-referral'),
+      timestamp: new Date().toISOString()
+    };
+
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
+    .then(() => {
+      document.getElementById('page-form').style.display = 'none';
+      document.getElementById('page-success').style.display = 'block';
+      document.getElementById('step2').classList.remove('active');
+      document.getElementById('step2').classList.add('done');
+      document.getElementById('step3').classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    })
+    .catch(() => {
+      // no-cors selalu masuk .then() bukan .catch(), tapi jaga-jaga
+      document.getElementById('page-form').style.display = 'none';
+      document.getElementById('page-success').style.display = 'block';
+    });
   }
-
-  return valid;
-}
-
-function submitForm() {
-  if (!validateForm()) return;
-
-  const tgl = val('f-tgl');
-  const days = selectedPickup === 'ambil' ? 3 : 5;
-  const tglObj = new Date(tgl);
-  const retObj = new Date(tgl);
-  retObj.setDate(retObj.getDate() + days - 1);
-  const fmt = d => d.toLocaleDateString('id-ID', {day:'numeric',month:'long',year:'numeric'});
-  const now = new Date().toLocaleString('id-ID', {timeZone:'Asia/Jakarta'});
-
-  const payload = {
-    timestamp: now,
-    nama: val('f-nama'),
-    tanggalAcara: fmt(tglObj),
-    tanggalKembali: fmt(retObj),
-    seriesKebaya: val('f-series'),
-    universitas: val('f-univ'),
-    noWhatsapp: val('f-wa'),
-    acara: val('f-acara'),
-    tinggiBadan: val('f-tinggi'),
-    beratBadan: val('f-berat'),
-    lingkarDada: val('f-dada'),
-    lingkarPinggang: val('f-pinggang'),
-    lingkarPinggul: val('f-pinggul'),
-    sosialMedia: val('f-sosmed'),
-    alamat: val('f-alamat') || '-',
-    noRekening: val('f-rek'),
-    referral: val('f-referral') || '-',
-    metode: selectedPickup === 'ambil' ? 'Ambil Sendiri ke galeri' : 'Dikirim ke alamat penyewa',
-  };
-
-  const btn = document.getElementById('btn-submit');
-  btn.disabled = true;
-  btn.textContent = 'Mengirim...';
-
-  fetch(APPS_SCRIPT_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  }).then(() => {
-    showSuccess(payload, fmt(tglObj), fmt(retObj));
-  }).catch(() => {
-    showSuccess(payload, fmt(tglObj), fmt(retObj));
-  });
-}
-
-function showSuccess(data, tglAcara, tglKembali) {
-  const rows = [
-    ['Nama', data.nama],
-    ['Series kebaya', data.seriesKebaya],
-    ['Acara', data.acara + ' — ' + data.universitas],
-    ['Metode', data.metode],
-    ['Tanggal acara', tglAcara],
-    ['Tanggal kembali', tglKembali],
-  ];
-  document.getElementById('success-details').innerHTML = rows.map(r =>
-    '<div class="detail-row"><span class="dk">' + r[0] + '</span><span class="dv">' + r[1] + '</span></div>'
-  ).join('');
-  setPage('page3');
-  setStep(3);
-}
 </script>
 </body>
 </html>
